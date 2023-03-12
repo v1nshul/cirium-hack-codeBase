@@ -9,6 +9,7 @@ onlyTime_aircraft_sw = read_csv("southwest.csv",col_select = c(time_on_ground_mi
 onlyTime_aircraft_sw
 
 time_filetered_sw = filter(onlyTime_aircraft_sw, time_on_ground_mins<180)
+summary(time_filetered_sw)
 total_time_sw = time_filetered_sw %>% summarise(sum_time_sw = sum(time_on_ground_mins))
 total_time_sw
 
@@ -23,7 +24,12 @@ result_sw
 onlyTime_aircraft_jb = read_csv("jetblue.csv",col_select = c(time_on_ground_mins))
 onlyTime_aircraft_jb
 
+onlyAge_time_ac_jb = read_csv("jetblue.csv",col_select = c(aircraft_age_at_departure,time_on_ground_mins))
+onlyAge__time_ac_jb
+
 time_filetered_jb = filter(onlyTime_aircraft_jb, time_on_ground_mins<180)
+summary(time_filetered_jb)
+
 total_time_jb = time_filetered_jb %>% summarise(sum_time_jb = sum(time_on_ground_mins))
 total_time_jb
 
@@ -38,6 +44,8 @@ onlyTime_aircraft_dt = read_csv("delta.csv",col_select = c(time_on_ground_mins))
 onlyTime_aircraft_dt
 
 time_filetered_dt = filter(onlyTime_aircraft_dt, time_on_ground_mins<180)
+summary(time_filetered_dt)
+
 total_time_dt = time_filetered_dt %>% summarise(sum_time_dt = sum(time_on_ground_mins))
 total_time_dt
 
@@ -92,6 +100,11 @@ graph1_point<-ggplot(data=results_all, aes(x=airline, y=time)) +
 graph1_point
 
 
+#trying to plot an heat map for jetblue 
+df_jb <- scale(onlyAge_time_ac_jb)
+heatmap(df_jb, scale = "none")
+
+
 #for jet blue: method 1 (taking one aircraft and then comparing each aircraft)
 onlyTime_aircraft = read_csv("jetblue.csv",col_select = c(aircraft_type, time_on_ground_mins))
 onlyTime_aircraft
@@ -108,13 +121,8 @@ time_filetered = filter(onlyTime_aircraft, time_on_ground_mins < 180)
 avg_time = time_filetered %>% summarise(avg_jetBlue = mean(time_on_ground_mins))
 avg_time
 
-library(ggplot2)
-p <- ggplot(data = time_filetered,aes(x = aircraft_type, y = time_on_ground_mins))+
-  geom_bar(stat = 'identity')
-p
 
 
-#mro relationships
 
-mro= read_csv("mro-relationships.csv")
+
 
